@@ -4,7 +4,7 @@ Donate link: http://wordpress.org
 Tags: mortgage, mortgage calculator, loan calculator, real estate, mortgage calc
 Requires at least: 4.6
 Stable tag: 1.60
-Tested up to: 6.5
+Tested up to: 6.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
