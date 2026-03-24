@@ -1,4 +1,5 @@
-<?php // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase
+<?php
+defined( 'ABSPATH' ) || exit; // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * Update network options.
  *
@@ -11,7 +12,7 @@
 function wpmc_update_network_options() {
 	// Check if current user is a site administrator.
 	if ( ! current_user_can( 'manage_network_options' ) ) {
-		wp_die( 'You don\t have the privileges to do this operation (should be: site administrator).' );
+		wp_die( 'You don\'t have the privileges to do this operation (should be: site administrator).' );
 	}
 
 	// $_POST[ 'option_page' ] below comes from a hidden input that WordPress automatically generates for admin forms. The value equals to the admin page slug.
@@ -19,8 +20,8 @@ function wpmc_update_network_options() {
 	// Check that the request is coming from the administration area.
 	check_admin_referer( $page_slug . '-options' );
 	// Cycle through the settings we're submitting. If there are any changes, update them.
-	global $new_whitelist_options;
-	$options = $new_whitelist_options[ $page_slug ];
+	global $new_allowed_options;
+	$options = isset( $new_allowed_options[ $page_slug ] ) ? $new_allowed_options[ $page_slug ] : array();
 
 	foreach ( $options as $option ) {
 		if ( isset( $_POST[ $option ] ) ) {
@@ -35,7 +36,7 @@ function wpmc_update_network_options() {
 	}
 
 	// Finally, after saving the settings, redirect to the settings page.
-	$query_args = array( 'page' => 'mortgage-calculators-wp' );
+	$query_args = array( 'page' => 'wpmc' );
 	if ( 'wpmc_one' === $page_slug ) {
 		$query_args['action'] = 'cal-one';
 	} elseif ( 'wpmc_two' === $page_slug ) {
@@ -50,8 +51,7 @@ function wpmc_update_network_options() {
 		$query_args['action'] = 'cal-six';
 	}
 	$query_args['settings-updated'] = 'true';
-	// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
-	wp_redirect( add_query_arg( $query_args, network_admin_url( 'admin.php' ) ) );
+	wp_safe_redirect( add_query_arg( $query_args, network_admin_url( 'admin.php' ) ) );
 	exit();
 }
 add_action( 'network_admin_edit_wpmc_update_network_options', 'wpmc_update_network_options' );
